@@ -77,6 +77,21 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
             }
         }
     }
+    
+    @Override
+    public int getSoldierCount() {
+        return soldierCount;
+    }
+
+    @Override
+    public int getFuelCount() {
+        return fuel;
+    }
+
+    @Override
+    public int getAmmoCount() {
+        return ammoCount;
+    }
 
     private void useResources() {
         while (energy > 0) {

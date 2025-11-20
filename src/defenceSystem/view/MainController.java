@@ -55,9 +55,9 @@ public class MainController extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnDeploy = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblSoldierAmount = new javax.swing.JLabel();
+        lblFuelAmount = new javax.swing.JLabel();
+        lblAmmoAmount = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         controllerTxtArea = new javax.swing.JTextArea();
         jLabel11 = new javax.swing.JLabel();
@@ -71,6 +71,11 @@ public class MainController extends javax.swing.JFrame {
         defencesCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Defence", "Helicopter", "Tank", "Submarine" }));
 
         jButton1.setText("Collect Informations");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         areaClearCheckbox.setText("Area Clear");
         areaClearCheckbox.addActionListener(new java.awt.event.ActionListener() {
@@ -138,14 +143,14 @@ public class MainController extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("0");
+        lblSoldierAmount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSoldierAmount.setText("0");
 
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("0");
+        lblFuelAmount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblFuelAmount.setText("0");
 
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("0");
+        lblAmmoAmount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblAmmoAmount.setText("0");
 
         controllerTxtArea.setEditable(false);
         controllerTxtArea.setColumns(20);
@@ -191,29 +196,25 @@ public class MainController extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addGap(107, 107, 107)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel10)
+                                .addComponent(lblAmmoAmount)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel8))
+                                        .addComponent(lblSoldierAmount))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addGap(75, 75, 75)
-                                        .addComponent(jLabel9))))
+                                        .addComponent(lblFuelAmount))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblValue, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(54, 54, 54)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel7)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -255,15 +256,15 @@ public class MainController extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel8))
+                            .addComponent(lblSoldierAmount))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel9))
+                            .addComponent(lblFuelAmount))
                         .addGap(11, 11, 11)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel10))
+                            .addComponent(lblAmmoAmount))
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -358,6 +359,31 @@ public class MainController extends javax.swing.JFrame {
         btnSendMessage.setEnabled(true);
     }//GEN-LAST:event_txtMessageKeyReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        switch(defencesCombobox.getSelectedIndex()){
+            case 0 :
+                JOptionPane.showMessageDialog(this, "Please select a defence!");
+                lblSoldierAmount.setText("0");
+                lblFuelAmount.setText("0");
+                lblAmmoAmount.setText("0");
+                break;
+            case 1 :
+                lblSoldierAmount.setText(String.valueOf(helicopter.getSoldierCount()));
+                lblFuelAmount.setText(String.valueOf(helicopter.getFuelCount()));
+                lblAmmoAmount.setText(String.valueOf(helicopter.getAmmoCount()));
+                break;
+            case 2 :
+                lblSoldierAmount.setText(String.valueOf(tank.getSoldierCount()));
+                lblFuelAmount.setText(String.valueOf(tank.getFuelCount()));
+                lblAmmoAmount.setText(String.valueOf(tank.getAmmoCount()));
+                break;
+            case 3 :
+                lblSoldierAmount.setText(String.valueOf(submarine.getSoldierCount()));
+                lblFuelAmount.setText(String.valueOf(submarine.getFuelCount()));
+                lblAmmoAmount.setText(String.valueOf(submarine.getAmmoCount()));
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox areaClearCheckbox;
     private javax.swing.JButton btnDeploy;
@@ -367,7 +393,6 @@ public class MainController extends javax.swing.JFrame {
     private javax.swing.JTextArea helicopterTxtArea;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -375,13 +400,14 @@ public class MainController extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JLabel lblAmmoAmount;
+    private javax.swing.JLabel lblFuelAmount;
+    private javax.swing.JLabel lblSoldierAmount;
     private javax.swing.JLabel lblValue;
     private javax.swing.JCheckBox privateCheckBox;
     private javax.swing.JTextArea subMarineTxtArea;

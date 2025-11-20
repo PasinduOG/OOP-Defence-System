@@ -64,6 +64,21 @@ public class Helicopter extends javax.swing.JFrame implements DefenceObserver {
         }
     }
 
+    @Override
+    public int getSoldierCount() {
+        return soldierCount;
+    }
+
+    @Override
+    public int getFuelCount() {
+        return fuel;
+    }
+
+    @Override
+    public int getAmmoCount() {
+        return ammoCount;
+    }
+
     private void engineRunning() {
         while (fuel > 0) {
             fuelSpinner.setValue(--fuel);
