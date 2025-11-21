@@ -79,11 +79,12 @@ public class Helicopter extends javax.swing.JFrame implements DefenceObserver {
         return ammoCount;
     }
 
-    private void engineRunning() {
+    @Override
+    public void engineRunning() {
         while (fuel > 0) {
             fuelSpinner.setValue(--fuel);
-            if (fuel < 0) {
-                mainController.setSubmarineMessage(getTitle() + ": Need to refill fuel");
+            if (fuel == 0) {
+                mainController.setHelicoperMessage(getTitle() + ": Need to refill fuel");
                 JOptionPane.showMessageDialog(this, "Refill this Helicopter", "Low Fuel", JOptionPane.WARNING_MESSAGE);
             }
             try {
@@ -174,7 +175,14 @@ public class Helicopter extends javax.swing.JFrame implements DefenceObserver {
         jSlider1.setOrientation(javax.swing.JSlider.VERTICAL);
         jSlider1.setEnabled(false);
 
+        txtMessage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMessageKeyReleased(evt);
+            }
+        });
+
         btnSendMessage.setText("Send");
+        btnSendMessage.setEnabled(false);
         btnSendMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSendMessageActionPerformed(evt);
@@ -339,6 +347,7 @@ public class Helicopter extends javax.swing.JFrame implements DefenceObserver {
         mainController.setHelicoperMessage(getTitle() + ": " + message);
         txtChatArea.append("Me: " + message + "\n");
         txtMessage.setText("");
+        btnSendMessage.setEnabled(false);
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
     private void btnShootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShootActionPerformed
@@ -371,6 +380,15 @@ public class Helicopter extends javax.swing.JFrame implements DefenceObserver {
         }
         ammoSpinner.setValue(ammo - 3);
     }//GEN-LAST:event_btnLaserOpsActionPerformed
+
+    private void txtMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMessageKeyReleased
+        String message = txtMessage.getText();
+        if (message == null || message.equals("")) {
+            btnSendMessage.setEnabled(false);
+            return;
+        }
+        btnSendMessage.setEnabled(true);
+    }//GEN-LAST:event_txtMessageKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -26,8 +26,8 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
         fuelSpinner.setValue(fuel);
         energySlider.setValue(energy);
         oxygenSlider.setValue(oxygen);
-        new Thread(() -> useResources()).start();
         new Thread(() -> engineRunning()).start();
+        runEnergy();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
             }
         }
     }
-    
+
     @Override
     public int getSoldierCount() {
         return soldierCount;
@@ -91,6 +91,27 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
     @Override
     public int getAmmoCount() {
         return ammoCount;
+    }
+    
+    @Override
+    public void engineRunning() {
+        while (fuel > 0) {
+            fuelSpinner.setValue(--fuel);
+            if (fuel == 0) {
+                mainController.setSubmarineMessage(getTitle() + ": Need to refill fuel");
+                JOptionPane.showMessageDialog(this, "Refill this Submarine", "Low Fuel", JOptionPane.WARNING_MESSAGE);
+            }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+    
+    public void runEnergy(){
+        if (energySlider.getValue() != 0) {
+            new Thread(() -> useResources()).start();
+        }
     }
 
     private void useResources() {
@@ -108,19 +129,6 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
         }
     }
 
-    private void engineRunning() {
-        while (fuel > 0) {
-            fuelSpinner.setValue(--fuel);
-            if (fuel < 0) {
-                mainController.setSubmarineMessage(getTitle() + ": Need to refill fuel");
-                JOptionPane.showMessageDialog(this, "Refill this Submarine", "Low Fuel", JOptionPane.WARNING_MESSAGE);
-            }
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
-        }
-    }
 
     public void sendPrivateMessage(String message) {
         txtChatArea.append(message + "\n");
@@ -141,7 +149,7 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
         ammoSpinner = new javax.swing.JSpinner();
         oxygenSlider = new javax.swing.JSlider();
         txtMessage = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnSendMessage = new javax.swing.JButton();
         positionCheckbox = new javax.swing.JCheckBox();
         btnTrident = new javax.swing.JButton();
         areaStatusPanel = new javax.swing.JPanel();
@@ -213,10 +221,17 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
             }
         });
 
-        jButton4.setText("Send");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        txtMessage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMessageKeyReleased(evt);
+            }
+        });
+
+        btnSendMessage.setText("Send");
+        btnSendMessage.setEnabled(false);
+        btnSendMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnSendMessageActionPerformed(evt);
             }
         });
 
@@ -317,9 +332,9 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnSendMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblValue, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(energySlider, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,7 +384,7 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4)))
+                            .addComponent(btnSendMessage)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(energySlider, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,12 +416,13 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
         fuel = (int) fuelSpinner.getValue();
     }//GEN-LAST:event_fuelSpinnerStateChanged
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMessageActionPerformed
         String message = txtMessage.getText();
         mainController.setSubmarineMessage(getTitle() + ": " + message);
         txtChatArea.append("Me :" + message + "\n");
         txtMessage.setText("");
-    }//GEN-LAST:event_jButton4ActionPerformed
+        btnSendMessage.setEnabled(false);
+    }//GEN-LAST:event_btnSendMessageActionPerformed
 
     private void energySliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_energySliderStateChanged
         energy = energySlider.getValue();
@@ -453,17 +469,26 @@ public class Submarine extends javax.swing.JFrame implements DefenceObserver {
         ammoSpinner.setValue(ammo - 10);
     }//GEN-LAST:event_btnTridentActionPerformed
 
+    private void txtMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMessageKeyReleased
+        String message = txtMessage.getText();
+        if (message == null || message.equals("")) {
+            btnSendMessage.setEnabled(false);
+            return;
+        }
+        btnSendMessage.setEnabled(true);
+    }//GEN-LAST:event_txtMessageKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner ammoSpinner;
     private javax.swing.JPanel areaStatusPanel;
+    private javax.swing.JButton btnSendMessage;
     private javax.swing.JButton btnShoot;
     private javax.swing.JButton btnSonarOps;
     private javax.swing.JButton btnTomahawk;
     private javax.swing.JButton btnTrident;
     private javax.swing.JSlider energySlider;
     private javax.swing.JSpinner fuelSpinner;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

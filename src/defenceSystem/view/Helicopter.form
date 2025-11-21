@@ -223,10 +223,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtMessage">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtMessageKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnSendMessage">
       <Properties>
         <Property name="text" type="java.lang.String" value="Send"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendMessageActionPerformed"/>

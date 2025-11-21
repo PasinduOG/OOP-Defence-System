@@ -173,7 +173,7 @@ public class MainController extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(defencesCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,7 +224,7 @@ public class MainController extends javax.swing.JFrame {
                                                         .addComponent(jLabel2)
                                                         .addGap(75, 75, 75)
                                                         .addComponent(lblFuelAmount)))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -342,22 +342,26 @@ public class MainController extends javax.swing.JFrame {
                     controllerTxtArea.append("Me: " + message + "\n");
                     helicopter.updateMessage(getTitle() + ": " + message);
                     txtMessage.setText("");
+                    btnSendMessage.setEnabled(false);
                     break;
                 case 2:
                     controllerTxtArea.append("Me: " + message + "\n");
                     tank.updateMessage(getTitle() + ": " + message);
                     txtMessage.setText("");
+                    btnSendMessage.setEnabled(false);
                     break;
                 case 3:
                     controllerTxtArea.append("Me: " + message + "\n");
                     submarine.updateMessage(getTitle() + ": " + message);
                     txtMessage.setText("");
+                    btnSendMessage.setEnabled(false);
                     break;
             }
         } else {
             controllerTxtArea.append("Me: " + message + "\n");
             controller.updateDefence(getTitle() + ": " + message);
             txtMessage.setText("");
+            btnSendMessage.setEnabled(false);
         }
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
